@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://flashlight.png" type="Texture" id=1]
+[ext_resource path="res://light.gd" type="Script" id=2]
+
+[node name="flashlight" type="Node2D"]
+position = Vector2( 316.488, 492.315 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( 8.33072, -40.1222, 225.348, -311.535, 343.206, -176.679, 40.0617, -9.52451 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Area2D"]
+color = Color( 1, 1, 1, 0.733333 )
+polygon = PoolVector2Array( 13.0876, -39.6211, 226.346, -310.922, 341.779, -179.185, 40.4785, -9.62149 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 1 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
