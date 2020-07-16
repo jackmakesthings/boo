@@ -17,11 +17,11 @@ func _ready():
 
 
 func _on_Area2D_body_entered(body):
-	print('entered')
 	body.in_light = true
+	body.on_light_entered()
 
 
 
 func _on_Area2D_body_exited(body):
-	print('exited')
 	body.in_light = false
+	body.on_light_exited()
