@@ -1,10 +1,13 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://ghost.gd" type="Script" id=1]
 [ext_resource path="res://ghostbody.png" type="Texture" id=2]
 [ext_resource path="res://alert.png" type="Texture" id=3]
 [ext_resource path="res://ghostbutt.png" type="Texture" id=4]
 [ext_resource path="res://all-faces.png" type="Texture" id=5]
+[ext_resource path="res://Chewy-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://ui/radial-bg.png" type="Texture" id=7]
+[ext_resource path="res://ui/radial-fg.png" type="Texture" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -130,12 +133,15 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="DynamicFont" id=20]
+size = 100
+font_data = ExtResource( 6 )
+
 [node name="ghost" type="KinematicBody2D"]
 position = Vector2( 547.479, 285.643 )
 rotation = 6.28319
 scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 1 )
-speed = 300
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -1.59302, 2.82361 )
@@ -165,19 +171,33 @@ speed_scale = 3.0
 position = Vector2( 10, 11.654 )
 frames = SubResource( 19 )
 animation = "happy"
-frame = 1
 playing = true
 
-[node name="health" type="Label" parent="body"]
-margin_left = 94.0292
-margin_top = -154.152
-margin_right = 134.029
-margin_bottom = -123.152
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -62.3435, -39.5999, 68.172, -38.4112, 62.2268, 135.808, -68.8832, 133.133, -62.9379, -37.2214 )
+
+[node name="health" type="Label" parent="."]
+margin_left = -84.0009
+margin_top = -418.999
+margin_right = 70.9991
+margin_bottom = -157.999
+custom_fonts/font = SubResource( 20 )
 text = "100
 "
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -62.3435, -39.5999, 68.172, -38.4112, 62.2268, 135.808, -68.8832, 133.133, -62.9379, -37.2214 )
+[node name="healthWheel" type="TextureProgress" parent="."]
+margin_left = -171.018
+margin_top = -519.435
+margin_right = 147.982
+margin_bottom = -200.435
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
+fill_mode = 4
+tint_under = Color( 0.517647, 0.517647, 0.517647, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

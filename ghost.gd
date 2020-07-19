@@ -5,21 +5,24 @@ extends KinematicBody2D
 # To make any variable editor-adjustable,
 # export it; provide a default value, a type, or both
 
-export (int) var speed = 200
+export (int) var speed = 300
 export (float) var friction = 0.04
 export (float) var acceleration = 0.1
+
+# Damage/healing knobs
+export (float) var health_decay_rate = 25
+export (float) var health_decay_delay = 0
+export (float) var health_recharge_rate = 1
+export (float) var health_recharge_delay = 0
 
 # Velocity is for physics; to change ghost speed, edit the speed var
 var velocity = Vector2.ZERO
 
 # Statuses
+# Maybe we treat these as states...
 var in_light = false
 var time_in_light = 0
 var health = 100
-
-export (float) var health_decay_rate = .1
-export (float) var health_decay_delay = 0
-export (float) var health_recharge_rate = .1
 
 func get_input(_delta):
 	var input_velocity = Vector2.ZERO
@@ -64,28 +67,35 @@ func _physics_process(_delta):
 	# Show/hide "!"
 	if (in_light):
 		$body/reaction.visible = true
+		take_damage(_delta)
 	else:
 		$body/reaction.visible = false
+		if (health < 100):
+			heal(_delta)
+	
+	if (health < 100):
+		$healthWheel.visible = true
+	else:
+		$healthWheel.visible = false
+				
+	var rounded_health = round(health)
+	$health.text = min(100, rounded_health) as String
+	$healthWheel.value = min(100, health)
 #
-	$body/health.text = health as String
+func take_damage(_delta):
+	if (health > 0):
+		health = health -  (_delta * health_decay_rate)
 #
-#func take_damage(_delta):
-#	if (health > 0):
-#		health = health - (_delta * health_decay_rate)
-#
-#func heal(_delta):
-#	if (health < 100):
-#		health = health + (_delta + health_recharge_rate)
+func heal(_delta):
+	if (health < 100):
+		health = health + (_delta + health_recharge_rate)
 #
 func on_light_entered():
-	print('in')
 	$body/face.play("oh-no")
 	$body/face.playing = true
 		
 func on_light_exited():
-	print('out')
 	$body/face.play("happy")
-	
 	$body/face.playing = true
 #
 
