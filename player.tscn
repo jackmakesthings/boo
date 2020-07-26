@@ -17,7 +17,7 @@ scale = Vector2( 2, 2 )
 current = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -94.3635, 128.638, -66.0726, -71.6237, -33.343, -118.777, 14.9193, -131.536, 70.9482, -115.449, 97.5758, -68.296, 68.7303, 129.747 )
+polygon = PoolVector2Array( -66.6597, 77.8831, -56.1105, -47.0491, -20.5745, -104.796, 25.5116, -108.683, 68.8214, -93.6909, 86.0344, -46.4944, 67.7118, 80.6588 )
 
 [node name="reaction" type="Sprite" parent="CollisionPolygon2D"]
 position = Vector2( 16.0273, -205.075 )
