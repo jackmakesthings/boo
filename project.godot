@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="boo"
-run/main_scene="res://house.tscn"
+run/main_scene="res://scenes/house.tscn"
 config/icon="res://icon.png"
 
 [input]
@@ -52,6 +52,7 @@ move_down={
 boo={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":66,"unicode":0,"echo":false,"script":null)
  ]
 }
 haunt={

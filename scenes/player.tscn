@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://ghost.gd" type="Script" id=1]
 [ext_resource path="res://ghostbody.png" type="Texture" id=2]
@@ -137,6 +137,10 @@ animations = [ {
 size = 100
 font_data = ExtResource( 6 )
 
+[sub_resource type="DynamicFont" id=21]
+size = 60
+font_data = ExtResource( 6 )
+
 [node name="ghost" type="KinematicBody2D"]
 position = Vector2( 547.479, 285.643 )
 rotation = 6.28319
@@ -171,6 +175,7 @@ speed_scale = 3.0
 position = Vector2( 10, 11.654 )
 frames = SubResource( 19 )
 animation = "happy"
+frame = 1
 playing = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
@@ -198,6 +203,18 @@ texture_under = ExtResource( 7 )
 texture_progress = ExtResource( 8 )
 fill_mode = 4
 tint_under = Color( 0.517647, 0.517647, 0.517647, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="boo" type="Label" parent="."]
+visible = false
+margin_left = 128.0
+margin_top = -2.00055
+margin_right = 199.0
+margin_bottom = 50.9995
+custom_fonts/font = SubResource( 21 )
+text = "BOO!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
