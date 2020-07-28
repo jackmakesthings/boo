@@ -24,18 +24,6 @@ var in_light = false
 var time_in_light = 0
 var health = 100
 
-enum state {
-	IDLE,
-	MOVING,
-	READY_TO_HAUNT,
-	HAUNTING,
-	POOF
-}
-
-var current_state = state.IDLE
-var active_hauntable = null
-var selected_hauntable = null
-
 func get_input(_delta):
 	var input_velocity = Vector2.ZERO
 	
@@ -87,7 +75,7 @@ func get_input(_delta):
 		set_current_state(state.IDLE)
 		
 	velocity = move_and_slide(velocity)
-	
+
 
 # This gets called basically every frame	
 func _physics_process(_delta):
@@ -111,9 +99,6 @@ func _physics_process(_delta):
 	$health.text = min(100, rounded_health) as String
 	$healthWheel.value = min(100, health)
 
-# not sure i need this to be a func but couldn't hurt
-func set_current_state(state):
-	current_state = state
 
 func take_damage(_delta):
 	if (health > 0):
@@ -131,30 +116,17 @@ func on_light_exited():
 	$body/face.play("happy")
 	$body/face.playing = true
 #
-
-func boo():
+func onBoo():
+	# add conditionals here to make sure we are in a boo-ready state
 	print('boo!')
 	$body/face.play('boo')
 	$body/face.playing = true
 
-func onHauntableApproach(hauntable):
-	set_current_state(state.READY_TO_HAUNT)
-	selected_hauntable = hauntable
+func onHaunt():
+	# add conditionals here to check for nearby hauntable
+	print('haunt?')
 
-func onHauntableLeave(hauntable):
-	selected_hauntable = null
-	
-func haunt(hauntable):
-	set_current_state(state.HAUNTING)
-	active_hauntable = hauntable
-	print('now haunting:')
-	print(hauntable)
 
-func unhaunt(hauntable):
-	set_current_state(state.IDLE)
-	active_hauntable = null
-
-#
 func _ready():
 	$body/bottom.play('default')
 	$body/torso.play('default')

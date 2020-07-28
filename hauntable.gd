@@ -32,7 +32,8 @@ func _ready():
 # in case this logic needs to change later
 func is_player(body):
 	return body.has_method('haunt')
-	
+
+# not sure if keeping this but maybe?	
 # state change method - there may be a better way to do this?
 func set_current_state(new_state):
 	current_state = new_state
@@ -52,6 +53,8 @@ func set_current_state(new_state):
 func _input(event):
 	pass
 
+
+# these need to talk to the parent scene to update active_hauntable
 func _on_Area2D_body_entered(body):
 	if current_state == state.IDLE && is_player(body):
 		set_current_state(state.SELECTED)
@@ -65,4 +68,15 @@ func _on_Area2D_body_exited(body):
 # methods to reference from the ghost
 
 func onBoo():
+	# conditionals here for whether this hauntable "can_act"
 	print('spoooooky!')
+
+func onHaunt():
+	# this should universally be an "unhaunt" which updates the scene
+	pass
+
+func onMove():
+	# still not sure how exactly to pass the inputs here
+	# put conditionals for can_move, then movement logic if true
+	# maybe velocity or input gets passed as a param here?
+	pass
