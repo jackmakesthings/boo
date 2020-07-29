@@ -1,4 +1,5 @@
 extends KinematicBody2D
+var root
 
 # KNOBS!
 # To make any variable editor-adjustable,
@@ -15,6 +16,9 @@ export (float) var health_decay_delay = 0
 export (float) var health_recharge_rate = 1
 export (float) var health_recharge_delay = 0
 
+# Track whether we're close enough to haunt something
+var nearby_hauntable = null
+
 # Velocity is for physics; to change ghost speed, edit the speed var
 var velocity = Vector2.ZERO
 
@@ -24,25 +28,32 @@ var in_light = false
 var time_in_light = 0
 var health = 100
 
-func get_input(_delta):
+enum state {
+	IDLE,
+	MOVING,
+	READY_TO_HAUNT,
+	HAUNTING,
+	POOF
+}
+
+var current_state = state.IDLE
+# not sure i need this to be a func but couldn't hurt
+
+func set_current_state(state):
+	current_state = state
+	
+func _enter_tree():
+	root = get_parent()
+	
+func _input(event):
+	if Input.is_action_just_pressed('boo'):
+		onBoo()
+	if Input.is_action_just_pressed('haunt'):
+		onHaunt()
+
+func handle_movement(_delta):
 	var input_velocity = Vector2.ZERO
-	
-	if Input.is_action_pressed("boo"):
-		print('boo pressed')
-		if current_state == state.IDLE:
-			boo()
-		if current_state == state.MOVING:
-			set_current_state(state.IDLE)
-			boo()
-		if current_state == state.HAUNTING:
-			active_hauntable.onBoo()
-			
-	if Input.is_action_pressed("haunt"):
-		print('haunt pressed')
-		if current_state == state.READY_TO_HAUNT:
-			haunt(selected_hauntable)
-		
-	
+
 	if Input.is_action_pressed("move_right"):
 		input_velocity.x += 1
 		$body.scale.x = 1
@@ -73,13 +84,12 @@ func get_input(_delta):
 		$body/torso.play('default')
 		$body/face.position.x = 10.0
 		set_current_state(state.IDLE)
-		
 	velocity = move_and_slide(velocity)
 
 
 # This gets called basically every frame	
 func _physics_process(_delta):
-	get_input(_delta)
+	handle_movement(_delta)
 	
 	# Show/hide "!"
 	if (in_light):
@@ -91,14 +101,15 @@ func _physics_process(_delta):
 			heal(_delta)
 	
 	if (health < 100):
+		$health.visible = true
 		$healthWheel.visible = true
 	else:
+		$health.visible = false
 		$healthWheel.visible = false
 				
 	var rounded_health = round(health)
 	$health.text = min(100, rounded_health) as String
 	$healthWheel.value = min(100, health)
-
 
 func take_damage(_delta):
 	if (health > 0):
@@ -115,18 +126,33 @@ func on_light_entered():
 func on_light_exited():
 	$body/face.play("happy")
 	$body/face.playing = true
-#
+
+# These conditionals will probably get more robust	
+func canBoo():
+	return health >= 100
+
+func canHaunt():
+	return health >= 100 and nearby_hauntable
+	
+func onHauntableApproach(hauntable):
+	nearby_hauntable = hauntable
+
+func onHauntableLeave(hauntable):
+	nearby_hauntable = null
+
 func onBoo():
-	# add conditionals here to make sure we are in a boo-ready state
-	print('boo!')
-	$body/face.play('boo')
-	$body/face.playing = true
+	if canBoo():
+		$body/face.play('boo')
+		$body/face.playing = true
+	else:
+		print("can't boo right now!")
 
 func onHaunt():
-	# add conditionals here to check for nearby hauntable
-	print('haunt?')
-
-
+	if canHaunt():
+		root.active_hauntable = nearby_hauntable
+	else:
+		print("can't haunt right now")
+	
 func _ready():
 	$body/bottom.play('default')
 	$body/torso.play('default')
