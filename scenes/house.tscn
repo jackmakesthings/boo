@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://fpo/house-bg-1.png" type="Texture" id=2]
 [ext_resource path="res://scenes/flashlight.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/rollerskate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://level.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 24.6672, 333.569 )
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 5 )
@@ -24,3 +27,20 @@ position = Vector2( 134.454, 491.336 )
 position = Vector2( 751, 520 )
 collision_mask = 2
 can_move = true
+
+[node name="interior_wall" type="StaticBody2D" parent="."]
+position = Vector2( 922.122, 256.325 )
+collision_layer = 2
+collision_mask = 2147483650
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interior_wall"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="exterior_wall" type="StaticBody2D" parent="."]
+position = Vector2( -3.83167, 259.322 )
+collision_mask = 2147483651
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exterior_wall"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 1 )

@@ -16,7 +16,7 @@ enum state {
 	IDLE,
 	SELECTED,
 	HAUNTED,
-	ACTIVE,
+	ACTING,
 	MOVING
 }
 
@@ -30,6 +30,14 @@ func _ready():
 	set_physics_process(false)
 	
 func handle_movement():
+	if ( Input.is_action_just_pressed('move_right') or
+		Input.is_action_just_pressed('move_left')):
+		set_current_state(state.MOVING)
+	
+	if ( Input.is_action_just_released('move_right') or
+		 Input.is_action_just_released('move_left')):
+		set_current_state(state.HAUNTED)
+	
 	var input_velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_right"):
 		input_velocity.x += 1
@@ -49,7 +57,7 @@ func handle_movement():
 # in case this logic needs to change later
 # should probably use collision layers instead
 func is_player(body):
-	return body.has_method('haunt')
+	return 'health' in body
 
 # not sure if keeping this but maybe?	
 # state change method - there may be a better way to do this?
@@ -60,12 +68,12 @@ func set_current_state(new_state):
 			print('idle')
 		state.SELECTED:
 			print('selected')
-		state.ACTIVE:
-			print('active')
 		state.HAUNTED:
 			print('haunted')
 		state.MOVING:
 			print('moving')
+		state.ACTING:
+			print('acting')
 
 # Core input handler
 func _input(event):
@@ -80,21 +88,32 @@ func _physics_process(_delta):
 	
 # these need to talk to the parent scene to update active_hauntable
 func _on_Area2D_body_entered(body):
-	print(body)
+	if current_state != state.IDLE or !is_player(body):
+		return
 	body.onHauntableApproach(self)
-	if current_state == state.IDLE && is_player(body):
-		set_current_state(state.SELECTED)
+	set_current_state(state.SELECTED)
 
 func _on_Area2D_body_exited(body):
+	if current_state != state.SELECTED or !is_player(body):
+		return
 	body.onHauntableLeave(self)
-	if current_state == state.SELECTED && is_player(body):
-		set_current_state(state.IDLE)
+	set_current_state(state.IDLE)
 
+func activate():
+	set_physics_process(true)
+	set_process_input(true)
+	$Camera2D.current = true
+	set_current_state(state.HAUNTED)
+
+func deactivate():
+	set_physics_process(false)
+	set_process_input(false)
+	$Camera2D.current = false
+	set_current_state(state.IDLE)
 
 func onBoo():
 	$Label.visible = true
 	
 func onHaunt():
-	set_physics_process(false)
-	set_process_input(false)
+	deactivate()
 	root.active_hauntable = null

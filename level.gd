@@ -27,9 +27,7 @@ func set_active_hauntable(hauntable):
 		player.get_node("Camera2D").current = false
 		player.visible = false
 		
-		hauntable.set_physics_process(true)
-		hauntable.set_process_input(true)
-		hauntable.get_node("Camera2D").current = true
+		hauntable.activate()
 	
 	active_hauntable = hauntable
 	print(active_hauntable)
