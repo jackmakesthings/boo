@@ -65,10 +65,13 @@ func set_current_state(new_state):
 	current_state = new_state
 	match current_state:
 		state.IDLE:
+			modulate = '#fff'
 			print('idle')
 		state.SELECTED:
+			modulate = '#7b43e9';
 			print('selected')
 		state.HAUNTED:
+			modulate = '#fff'
 			print('haunted')
 		state.MOVING:
 			print('moving')
@@ -76,7 +79,7 @@ func set_current_state(new_state):
 			print('acting')
 
 # Core input handler
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed('haunt'):
 		onHaunt()
 	if Input.is_action_just_pressed('boo') and can_act:

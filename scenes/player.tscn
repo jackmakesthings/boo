@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://ghost.gd" type="Script" id=1]
 [ext_resource path="res://ghostbody.png" type="Texture" id=2]
@@ -80,6 +80,34 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="Gradient" id=27]
+offsets = PoolRealArray( 0.5, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.756863, 1, 1, 1, 0.117647 )
+
+[sub_resource type="GradientTexture" id=23]
+gradient = SubResource( 27 )
+
+[sub_resource type="Curve" id=24]
+_data = [ Vector2( 0.254025, 0.975698 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.282004 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=25]
+curve = SubResource( 24 )
+
+[sub_resource type="ParticlesMaterial" id=26]
+emission_shape = 2
+emission_box_extents = Vector3( 85, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 45.0
+scale = 10.0
+scale_random = 0.2
+scale_curve = SubResource( 25 )
+color_ramp = SubResource( 23 )
+
 [sub_resource type="AtlasTexture" id=13]
 flags = 4
 atlas = ExtResource( 5 )
@@ -93,22 +121,22 @@ region = Rect2( 350, 0, 70, 110 )
 [sub_resource type="AtlasTexture" id=15]
 flags = 4
 atlas = ExtResource( 5 )
-region = Rect2( 910, 0, 70, 110 )
+region = Rect2( 210, 0, 70, 110 )
 
 [sub_resource type="AtlasTexture" id=16]
 flags = 4
 atlas = ExtResource( 5 )
-region = Rect2( 210, 0, 70, 110 )
+region = Rect2( 280, 0, 70, 110 )
 
 [sub_resource type="AtlasTexture" id=17]
 flags = 4
 atlas = ExtResource( 5 )
-region = Rect2( 280, 0, 70, 110 )
+region = Rect2( 0, 0, 70, 110 )
 
 [sub_resource type="AtlasTexture" id=18]
 flags = 4
 atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 70, 110 )
+region = Rect2( 910, 0, 70, 110 )
 
 [sub_resource type="SpriteFrames" id=19]
 animations = [ {
@@ -122,15 +150,15 @@ animations = [ {
 "name": "happy",
 "speed": 1.0
 }, {
-"frames": [ SubResource( 15 ), SubResource( 15 ) ],
-"loop": true,
-"name": "oh-no",
-"speed": 1.0
-}, {
-"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 16 ), SubResource( 18 ) ],
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 15 ), SubResource( 17 ) ],
 "loop": false,
 "name": "boo",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 18 ), SubResource( 18 ) ],
+"loop": true,
+"name": "oh-no",
+"speed": 1.0
 } ]
 
 [sub_resource type="DynamicFont" id=20]
@@ -156,26 +184,37 @@ zoom = Vector2( 2, 2 )
 
 [node name="body" type="Node2D" parent="."]
 
-[node name="reaction" type="Sprite" parent="body"]
-position = Vector2( -133.803, -85.959 )
-scale = Vector2( 0.105312, 0.105312 )
-texture = ExtResource( 3 )
+[node name="bg" type="Node2D" parent="body"]
 
-[node name="torso" type="AnimatedSprite" parent="body"]
+[node name="torso" type="AnimatedSprite" parent="body/bg"]
 position = Vector2( 0.00012207, 22 )
 frames = SubResource( 3 )
 
-[node name="bottom" type="AnimatedSprite" parent="body"]
+[node name="bottom" type="AnimatedSprite" parent="body/bg"]
 position = Vector2( -8.94287, 156.567 )
 frames = SubResource( 12 )
 frame = 7
 speed_scale = 3.0
 
+[node name="Particles2D" type="Particles2D" parent="body/bg"]
+position = Vector2( -10.0107, 176.686 )
+rotation = 1.36424e-12
+scale = Vector2( 1, 1 )
+emitting = false
+amount = 5
+visibility_rect = Rect2( -100, -50, 200, 250 )
+local_coords = false
+process_material = SubResource( 26 )
+
+[node name="reaction" type="Sprite" parent="body"]
+position = Vector2( -133.803, -85.959 )
+scale = Vector2( 0.105312, 0.105312 )
+texture = ExtResource( 3 )
+
 [node name="face" type="AnimatedSprite" parent="body"]
 position = Vector2( 10, 11.654 )
 frames = SubResource( 19 )
 animation = "happy"
-frame = 1
 playing = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
