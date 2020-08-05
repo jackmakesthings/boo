@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 
 # Declare member variables here. Examples:
@@ -16,12 +16,8 @@ func _ready():
 #	pass
 
 
-func _on_Area2D_body_entered(body):
-	body.in_light = true
-	body.on_light_entered()
+func new_game():
+	get_tree().change_scene("res://scenes/house.tscn")
 
-
-
-func _on_Area2D_body_exited(body):
-	body.in_light = false
-	body.on_light_exited()
+func show_options():
+	get_tree().change_sceen("res://scenes/Options.tscn")
