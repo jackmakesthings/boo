@@ -140,17 +140,17 @@ region = Rect2( 910, 0, 70, 110 )
 
 [sub_resource type="SpriteFrames" id=19]
 animations = [ {
-"frames": [ SubResource( 13 ), SubResource( 13 ) ],
+"frames": [ SubResource( 13 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 14 ), SubResource( 14 ) ],
+"frames": [ SubResource( 14 ) ],
 "loop": true,
 "name": "happy",
 "speed": 1.0
 }, {
-"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 15 ), SubResource( 17 ) ],
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 15 ), SubResource( 17 ), SubResource( 14 ) ],
 "loop": false,
 "name": "boo",
 "speed": 5.0
@@ -207,6 +207,7 @@ local_coords = false
 process_material = SubResource( 26 )
 
 [node name="reaction" type="Sprite" parent="body"]
+visible = false
 position = Vector2( -133.803, -85.959 )
 scale = Vector2( 0.105312, 0.105312 )
 texture = ExtResource( 3 )

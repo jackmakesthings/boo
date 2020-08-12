@@ -71,7 +71,8 @@ func set_current_state(new_state):
 			modulate = '#7b43e9';
 			print('selected')
 		state.HAUNTED:
-			modulate = '#fff'
+#			modulate = '#fff'
+			modulate = '#7b43e9';
 			print('haunted')
 		state.MOVING:
 			print('moving')
@@ -103,7 +104,7 @@ func _on_Area2D_body_exited(body):
 	set_current_state(state.IDLE)
 
 func activate():
-	set_physics_process(true)
+	set_physics_process(can_move)
 	set_process_input(true)
 	$Camera2D.current = true
 	set_current_state(state.HAUNTED)

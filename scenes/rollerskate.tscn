@@ -54,9 +54,9 @@ frames = SubResource( 6 )
 animation = "moving"
 frame = 2
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="hauntbox" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="hauntbox"]
 position = Vector2( -0.420441, -0.630676 )
 polygon = PoolVector2Array( -67.4925, -82.4742, 23.1141, -78.4799, 35.0969, -37.276, 64.5283, -17.5149, 78.1928, 67.8361, -87.674, 68.0463 )
 
@@ -81,5 +81,5 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.743256, 30.0275 )
 shape = SubResource( 7 )
-[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+[connection signal="body_entered" from="hauntbox" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="hauntbox" to="." method="_on_Area2D_body_exited"]
