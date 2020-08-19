@@ -1,27 +1,14 @@
-# Hauntable
+# Static Hauntable - boo only, no motion
+# Hauntables merit a refactor but I need to read more first
 
-extends KinematicBody2D
-export var can_move = false
-export var can_act = true
-
-export var move_vertically = false
-export var move_horizontally = false
-
-# Motion - just for testing rn
-export (int) var speed = 500
-export (float) var friction = 0.1
-export (float) var acceleration = 0.2
-var velocity = Vector2.ZERO
-
+extends StaticBody2D
 var root
-onready var hauntbox = find_node('hauntbox')
 
 enum state {
 	IDLE,
 	SELECTED,
 	HAUNTED,
-	ACTING,
-	MOVING
+	ACTING
 }
 
 var current_state = state.IDLE
@@ -29,41 +16,15 @@ var current_state = state.IDLE
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	hauntbox.connect("body_entered", self, "_on_hauntbox_entered")
-	hauntbox.connect("body_exited", self, "_on_hauntbox_exited")
+	$hauntbox.connect("body_entered", self, "_on_hauntbox_entered")
+	$hauntbox.connect("body_exited", self, "_on_hauntbox_exited")
 	
 	root = get_parent()
 	set_process_input(false)
 	set_physics_process(false)
 	
 func handle_movement():
-	if ( Input.is_action_just_pressed('move_right') or
-		Input.is_action_just_pressed('move_left')):
-		set_current_state(state.MOVING)
-	
-	if ( Input.is_action_just_released('move_right') or
-		 Input.is_action_just_released('move_left')):
-		set_current_state(state.HAUNTED)
-	
-	var input_velocity = Vector2.ZERO
-	if move_horizontally:
-		if Input.is_action_pressed("move_right"):
-			input_velocity.x += 1
-			$AnimatedSprite.scale.x = 1
-		if Input.is_action_pressed("move_left"):
-			input_velocity.x -= 1
-			$AnimatedSprite.scale.x = -1
-	
-	if move_vertically:
-		if Input.is_action_pressed("move_down"): input_velocity.y += 1
-		if Input.is_action_pressed("move_up"): input_velocity.y -= 1	
-				
-	input_velocity = input_velocity.normalized() * speed
-	if input_velocity.length() > 0:
-		velocity = velocity.linear_interpolate(input_velocity, acceleration)
-	else:
-		velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
-	velocity = move_and_slide(velocity)
+	pass
 
 # helper for checking if something's our ghost,
 # in case this logic needs to change later
@@ -86,8 +47,6 @@ func set_current_state(new_state):
 #			modulate = '#fff'
 			modulate = '#7b43e9';
 			print('haunted')
-		state.MOVING:
-			print('moving')
 		state.ACTING:
 			print('acting')
 
@@ -99,8 +58,7 @@ func _input(_event):
 		onBoo()
 #
 func _physics_process(_delta):
-	if can_move:
-		handle_movement()
+	pass
 	
 # these need to talk to the parent scene to update active_hauntable
 func _on_hauntbox_entered(body):
@@ -116,15 +74,11 @@ func _on_hauntbox_exited(body):
 	set_current_state(state.IDLE)
 
 func activate():
-	set_physics_process(can_move)
 	set_process_input(true)
-	$Camera2D.current = true
 	set_current_state(state.HAUNTED)
 
 func deactivate():
-	set_physics_process(false)
 	set_process_input(false)
-	$Camera2D.current = false
 	set_current_state(state.IDLE)
 
 func onBoo():

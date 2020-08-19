@@ -1,0 +1,193 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://scenes/basic_movement.gd" type="Script" id=1]
+[ext_resource path="res://fpo/house-bg-1.png" type="Texture" id=2]
+[ext_resource path="res://base_hauntable.gd" type="Script" id=3]
+[ext_resource path="res://img/generic_box.png" type="Texture" id=4]
+[ext_resource path="res://img/round-light.png" type="Texture" id=5]
+[ext_resource path="res://scenes/flashlight.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=7]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node2D
+# copied wholesale from root scene for efficiency
+
+var active_hauntable setget set_active_hauntable
+onready var player = $ghost
+var holp = Vector2.ZERO
+
+func set_active_hauntable(hauntable):
+	# hauntable is null, restore controls to the ghost
+	if (!hauntable):
+		holp = active_hauntable.get_node('origin').global_position
+		active_hauntable.deactivate()
+		player.activate(holp)
+	
+	# hauntable is set, delegate controls	
+	else:
+		player.deactivate()
+		hauntable.activate()
+	
+	active_hauntable = hauntable
+	print(active_hauntable)
+
+func _init():
+	var screen_size = OS.get_screen_size(0)
+	var window_size = OS.get_window_size()
+	OS.set_window_position(screen_size*0.5 - window_size*0.5)
+"
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends StaticBody2D
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var occluder_pg = $LightOccluder2D.occluder.polygon
+	$CollisionPolygon2D.polygon = occluder_pg
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[sub_resource type="OccluderPolygon2D" id=4]
+polygon = PoolVector2Array( -31.3428, -689.731, -33.2307, 471.234, 23.4019, 475.01, 10.1875, -640.65, 589.727, -646.313, 602.941, 554.295, 655.798, 542.969, 642.583, -735.037, -31.3428, -706.721, -27.5674, -704.833 )
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -238.121, -122.889, 241.754, -122.221, 242.421, 118.717, -239.456, 120.052 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 75, 35 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 70, 35 )
+
+[node name="light_test" type="Node2D"]
+script = SubResource( 2 )
+
+[node name="bg" type="Sprite" parent="."]
+modulate = Color( 0.231373, 0.231373, 0.262745, 1 )
+position = Vector2( 0, 0.943848 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="wall" type="StaticBody2D" parent="bg"]
+position = Vector2( 1278.16, -437.266 )
+script = SubResource( 3 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="bg/wall"]
+occluder = SubResource( 4 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="bg/wall"]
+
+[node name="flashlight" parent="." instance=ExtResource( 6 )]
+position = Vector2( -298.429, 422.589 )
+player = NodePath("../ghost")
+
+[node name="flashlight2" parent="." instance=ExtResource( 6 )]
+position = Vector2( -879.65, 500.571 )
+player = NodePath("../ghost")
+
+[node name="flashlight3" parent="." instance=ExtResource( 6 )]
+position = Vector2( -634.04, 21.364 )
+rotation = 1.42244
+player = NodePath("../ghost")
+
+[node name="Light2D5" type="Light2D" parent="."]
+light_mask = 0
+position = Vector2( 394.29, -409.246 )
+texture = ExtResource( 5 )
+energy = 2.0
+shadow_enabled = true
+shadow_item_cull_mask = -2147483647
+
+[node name="KinematicBody2D2" type="KinematicBody2D" parent="."]
+position = Vector2( 419.222, -360.748 )
+script = ExtResource( 1 )
+
+[node name="Sprite3" type="Sprite" parent="KinematicBody2D2"]
+light_mask = 0
+position = Vector2( 0.393066, -0.902649 )
+rotation = 1.5522e-09
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="KinematicBody2D2/Sprite3"]
+occluder = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="KinematicBody2D2"]
+current = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D2"]
+shape = SubResource( 5 )
+
+[node name="hauntable_static" type="StaticBody2D" parent="."]
+position = Vector2( -31.5161, 340.679 )
+collision_layer = 32
+collision_mask = 16
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hauntable_static"]
+position = Vector2( -3.57166, -1.19055 )
+shape = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="hauntable_static"]
+light_mask = 0
+position = Vector2( -4.72839, 0.254333 )
+rotation = 1.5522e-09
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="hauntable_static/Sprite"]
+occluder = SubResource( 1 )
+
+[node name="hauntbox" type="Area2D" parent="hauntable_static"]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="hauntable_static/hauntbox"]
+polygon = PoolVector2Array( -79.1974, -39.6123, 67.8009, -38.7214, 69.1373, 39.6776, -82.3156, 40.5685 )
+
+[node name="origin" type="Position2D" parent="hauntable_static"]
+
+[node name="hauntable_box" type="KinematicBody2D" parent="."]
+position = Vector2( -461.82, 284.553 )
+scale = Vector2( 1, 2 )
+collision_layer = 32
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hauntable_box"]
+position = Vector2( -3.57166, -1.19055 )
+shape = SubResource( 6 )
+
+[node name="AnimatedSprite" type="Sprite" parent="hauntable_box"]
+light_mask = 0
+position = Vector2( -4.72839, 0.254333 )
+rotation = 1.5522e-09
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="hauntable_box/AnimatedSprite"]
+occluder = SubResource( 1 )
+
+[node name="hauntbox" type="Area2D" parent="hauntable_box"]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="hauntable_box/hauntbox"]
+polygon = PoolVector2Array( -81.8701, -41.4104, 75.8189, -38.7377, 70.919, 40.3295, -84.9883, 40.1068 )
+
+[node name="origin" type="Position2D" parent="hauntable_box"]
+position = Vector2( -3.5636, 0.222717 )
+
+[node name="Camera2D" type="Camera2D" parent="hauntable_box"]
+zoom = Vector2( 2.5, 2.5 )
+
+[node name="ghost" parent="." instance=ExtResource( 7 )]
+position = Vector2( 305.501, 302.407 )

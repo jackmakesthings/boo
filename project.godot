@@ -61,6 +61,15 @@ haunt={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="hauntables"
+2d_physics/layer_3="targets"
+2d_physics/layer_4="walls"
+2d_physics/layer_5="lights"
+2d_physics/layer_6="occluders"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

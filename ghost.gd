@@ -26,6 +26,7 @@ var velocity = Vector2.ZERO
 var in_light = false
 var time_in_light = 0
 var health = 100
+var light_sources = []
 
 var allow_boo = true # this is a little questionable, refactor?
 
@@ -33,6 +34,9 @@ enum motion_states { IDLE, MOVING }
 enum health_states { OK, DAMAGE, HEAL }
 var motion_state = motion_states.IDLE
 var health_state = health_states.OK
+
+
+var input_velocity = Vector2.ZERO
 
 # cache some node paths in case they change later
 onready var face = $body/face
@@ -72,15 +76,14 @@ func set_health_state(new_state):
 func _enter_tree():
 	root = get_parent()
 	
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed('boo'):
 		onBoo()
 	if Input.is_action_just_pressed('haunt'):
 		onHaunt()
 
-func handle_movement(_delta):
-	var input_velocity = Vector2.ZERO
-
+func get_movement_input():
+	input_velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_right"): 
 		input_velocity.x += 1
 		$body.scale.x = 1
@@ -89,9 +92,9 @@ func handle_movement(_delta):
 		$body.scale.x = -1
 	if Input.is_action_pressed("move_down"): input_velocity.y += 1
 	if Input.is_action_pressed("move_up"): input_velocity.y -= 1
-			
 	input_velocity = input_velocity.normalized() * speed
 
+func handle_movement(_delta):
 	if input_velocity.length() > 0:
 		set_motion_state(motion_states.MOVING)
 		velocity = velocity.linear_interpolate(input_velocity, acceleration)
@@ -100,13 +103,16 @@ func handle_movement(_delta):
 		set_motion_state(motion_states.IDLE)
 	velocity = move_and_slide(velocity)
 
+func is_in_light():
+	return light_sources.size() > 0
 
 # This gets called basically every frame	
 func _physics_process(_delta):
+	get_movement_input()
 	handle_movement(_delta)
 	
 	# Show/hide "!"
-	if (in_light):
+	if (is_in_light()):
 		set_health_state(health_states.DAMAGE)
 	else:
 		if (health < 100):
@@ -196,7 +202,7 @@ func activate(holp):
 func deactivate():
 	set_physics_process(false)
 	set_process_input(false)
-	camera.current = false
+#	camera.current = false # maybe not here
 	visible = false
 	
 func _ready():

@@ -1,0 +1,195 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://target.gd" type="Script" id=1]
+[ext_resource path="res://img/legs-idle.png" type="Texture" id=2]
+[ext_resource path="res://fonts/Dosis-ExtraBold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://img/human-torso.png" type="Texture" id=4]
+[ext_resource path="res://img/head-idle.png" type="Texture" id=5]
+[ext_resource path="res://img/arm.png" type="Texture" id=6]
+[ext_resource path="res://img/legs-spooked.png" type="Texture" id=7]
+[ext_resource path="res://img/legs-walk.png" type="Texture" id=8]
+[ext_resource path="res://img/head-spooked.png" type="Texture" id=9]
+[ext_resource path="res://img/legs-turnaround.png" type="Texture" id=10]
+[ext_resource path="res://img/heads.png" type="Texture" id=11]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -23.8602, -119.276, -50.4552, -102.046, -59.0704, 39.5445, -45.2111, 177.014, -39.967, 183.757, 57.7975, 183.382, 70.1586, 20.0665, 32.7009, -120.4, 28.206, -127.517, 46.9348, -143.624, 61.9179, -171.717, 54.4263, -211.797, 58.5467, -224.532, 49.1823, -245.508, 6.4805, -259.742, -30.6026, -252.625, -53.0772, -233.147, -55.3247, -219.663, -71.4315, -215.542, -71.4315, -200.934, -63.9399, -170.593, -58.3213, -151.49, -36.5958, -129.39 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 11 )
+region = Rect2( 300, 0, 150, 150 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "scared",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ) ],
+"loop": false,
+"name": "turnaround",
+"speed": 4.0
+} ]
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 300, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 600, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 900, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 1200, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 1500, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 1800, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 2100, 0, 300, 300 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "scared",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "walk",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": false,
+"name": "turnaround",
+"speed": 4.0
+} ]
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 200, 201 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 200, 0, 200, 201 )
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 400, 0, 200, 201 )
+
+[sub_resource type="SpriteFrames" id=16]
+animations = [ {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "scared",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 15 ) ],
+"loop": false,
+"name": "turnaround",
+"speed": 4.0
+} ]
+
+[sub_resource type="DynamicFont" id=17]
+size = 30
+font_data = ExtResource( 3 )
+
+[node name="holden" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 12
+script = ExtResource( 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+polygon = PoolVector2Array( -75, -209, -117, 32, -101, 195, 122, 196, 127, 59, 81, -208 )
+
+[node name="body" type="Node2D" parent="."]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="body"]
+visible = false
+light_mask = 0
+occluder = SubResource( 1 )
+light_mask = 0
+
+[node name="arm_back" type="Sprite" parent="body"]
+position = Vector2( 10.2014, -90.4489 )
+rotation = -1.24819
+texture = ExtResource( 6 )
+offset = Vector2( -24.7934, 73.612 )
+
+[node name="head" type="AnimatedSprite" parent="body"]
+position = Vector2( -5.05109, -190.063 )
+frames = SubResource( 3 )
+animation = "idle"
+
+[node name="legs" type="AnimatedSprite" parent="body"]
+position = Vector2( -5.6123, 79.9754 )
+frames = SubResource( 12 )
+animation = "idle"
+
+[node name="torso" type="AnimatedSprite" parent="body"]
+position = Vector2( 4.16104, -57.1092 )
+frames = SubResource( 16 )
+animation = "idle"
+
+[node name="arm_front" type="Sprite" parent="body"]
+position = Vector2( -37.0383, -92.2688 )
+rotation = 0.138978
+texture = ExtResource( 6 )
+offset = Vector2( -24.7934, 73.612 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = 0.87558
+margin_top = -253.079
+margin_right = 40.8756
+margin_bottom = -214.079
+custom_fonts/font = SubResource( 17 )
+text = "!!!"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -5,7 +5,7 @@
 [ext_resource path="res://img/light-cone-on-bg.png" type="Texture" id=3]
 
 [node name="flashlight" type="Node2D"]
-position = Vector2( -313.678, 504.576 )
+position = Vector2( 316.488, 492.315 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -15,46 +15,29 @@ __meta__ = {
 collision_layer = 16
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-visible = false
-polygon = PoolVector2Array( 8.33072, -40.1222, 311.974, -448.547, 507.283, -226.861, 40.0617, -9.52451 )
+polygon = PoolVector2Array( 8.33072, -40.1222, 225.348, -311.535, 343.206, -176.679, 40.0617, -9.52451 )
 
 [node name="Polygon2D" type="Polygon2D" parent="Area2D"]
 visible = false
 color = Color( 1, 1, 1, 0.733333 )
 polygon = PoolVector2Array( 13.0876, -39.6211, 226.346, -310.922, 341.779, -179.185, 40.4785, -9.62149 )
 
+[node name="RayCast2D" type="RayCast2D" parent="Area2D"]
+cast_to = Vector2( 350, -180 )
+
+[node name="RayCast2D2" type="RayCast2D" parent="Area2D"]
+position = Vector2( 8.32446, -37.1627 )
+cast_to = Vector2( 220, -270 )
+
 [node name="Light2D" type="Light2D" parent="."]
 rotation = -0.676894
 texture = ExtResource( 3 )
-energy = 1.5
+energy = 2.0
 shadow_enabled = true
 
 [node name="Sprite" type="Sprite" parent="."]
 light_mask = 0
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )
-
-[node name="rays" type="Node2D" parent="."]
-
-[node name="ray1" type="RayCast2D" parent="rays" groups=[
-"rays",
-]]
-enabled = true
-cast_to = Vector2( 500, -220 )
-collision_mask = 41
-
-[node name="ray2" type="RayCast2D" parent="rays" groups=[
-"rays",
-]]
-position = Vector2( 8.32446, -37.1627 )
-enabled = true
-cast_to = Vector2( 300, -400 )
-collision_mask = 41
-
-[node name="ray3" type="RayCast2D" parent="rays" groups=[
-"rays",
-]]
-position = Vector2( 16.788, -12.2176 )
-enabled = true
-cast_to = Vector2( 400, -350 )
-collision_mask = 41
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

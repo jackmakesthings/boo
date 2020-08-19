@@ -1,46 +1,336 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://fpo/house-bg-1.png" type="Texture" id=2]
-[ext_resource path="res://scenes/flashlight.tscn" type="PackedScene" id=3]
+[ext_resource path="res://img/head-spooked.png" type="Texture" id=3]
 [ext_resource path="res://scenes/rollerskate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://level.gd" type="Script" id=5]
+[ext_resource path="res://scenes/target.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/portrait.tscn" type="PackedScene" id=7]
+[ext_resource path="res://target.gd" type="Script" id=8]
+[ext_resource path="res://fonts/Dosis-ExtraBold.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://img/legs-idle.png" type="Texture" id=10]
+[ext_resource path="res://img/human-torso.png" type="Texture" id=11]
+[ext_resource path="res://img/head-idle.png" type="Texture" id=12]
+[ext_resource path="res://img/arm.png" type="Texture" id=13]
+[ext_resource path="res://img/legs-spooked.png" type="Texture" id=14]
+[ext_resource path="res://img/legs-walk.png" type="Texture" id=15]
+[ext_resource path="res://scenes/flashlight.tscn" type="PackedScene" id=16]
+[ext_resource path="res://flashlight.png" type="Texture" id=17]
+[ext_resource path="res://img/light-cone-on-bg.png" type="Texture" id=18]
+[ext_resource path="res://light.gd" type="Script" id=19]
+[ext_resource path="res://img/heads.png" type="Texture" id=20]
+[ext_resource path="res://img/legs-turnaround.png" type="Texture" id=21]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 24.6672, 333.569 )
 
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -28.8871, -403.25, -25.8906, 333.918, 29.5468, 333.918, 17.5604, -410.741 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 24.667, 600 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 0, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 300, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 600, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 900, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 1200, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 1500, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 1800, 0, 300, 300 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 2100, 0, 300, 300 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "scared",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "walk",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 21 ) ],
+"loop": true,
+"name": "turnaround",
+"speed": 4.0
+} ]
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 200, 201 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 11 )
+region = Rect2( 200, 0, 200, 201 )
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 11 )
+region = Rect2( 400, 0, 200, 201 )
+
+[sub_resource type="SpriteFrames" id=16]
+animations = [ {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "idle",
+"speed": 8.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "scared",
+"speed": 8.0
+}, {
+"frames": [ SubResource( 15 ) ],
+"loop": false,
+"name": "turnaround",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=17]
+flags = 4
+atlas = ExtResource( 20 )
+region = Rect2( 300, 0, 150, 150 )
+
+[sub_resource type="SpriteFrames" id=18]
+animations = [ {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "scared",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 17 ) ],
+"loop": true,
+"name": "turnaround",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=19]
+size = 30
+font_data = ExtResource( 9 )
+
 [node name="Node2D" type="Node2D"]
+position = Vector2( -5.33936, -4.00452 )
 script = ExtResource( 5 )
+
+[node name="lamp" parent="." instance=ExtResource( 16 )]
+position = Vector2( 325.339, 4.9003 )
+rotation = 2.21308
+player = NodePath("../ghost")
 
 [node name="background" type="Sprite" parent="."]
 position = Vector2( 1261.2, -131.851 )
 scale = Vector2( 0.667629, 0.667629 )
 texture = ExtResource( 2 )
 
-[node name="flashlight" parent="." instance=ExtResource( 3 )]
-position = Vector2( 134.454, 491.336 )
-
 [node name="rollerskate" parent="." instance=ExtResource( 4 )]
 position = Vector2( 751, 520 )
 collision_mask = 2
 can_move = true
+move_horizontally = true
 
 [node name="ghost" parent="." instance=ExtResource( 1 )]
-position = Vector2( 545.589, 321.551 )
+position = Vector2( 798.733, -498.693 )
+speed = 200
 
 [node name="interior_wall" type="StaticBody2D" parent="."]
 position = Vector2( 922.122, 256.325 )
-collision_layer = 2
-collision_mask = 2147483650
+collision_layer = 8
+collision_mask = 2147483654
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="interior_wall"]
 position = Vector2( -0.5, 0 )
 shape = SubResource( 1 )
 
+[node name="interior_wall2" type="StaticBody2D" parent="."]
+position = Vector2( 671.727, -439.309 )
+collision_layer = 8
+collision_mask = 2147483654
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interior_wall2"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="interior_wall2"]
+occluder = SubResource( 2 )
+
 [node name="exterior_wall" type="StaticBody2D" parent="."]
-position = Vector2( -3.83167, 259.322 )
-collision_mask = 2147483651
+position = Vector2( 0.172847, -75.7228 )
+collision_layer = 8
+collision_mask = 2147483655
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exterior_wall"]
 position = Vector2( -0.5, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
+
+[node name="exterior_wall2" type="StaticBody2D" parent="."]
+position = Vector2( 2117.23, -69.0486 )
+collision_layer = 8
+collision_mask = 2147483655
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exterior_wall2"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 3 )
+
+[node name="portrait" parent="." instance=ExtResource( 7 )]
+position = Vector2( 1045.51, -518.799 )
+collision_layer = 2
+collision_mask = 12
+
+[node name="holden" parent="." instance=ExtResource( 6 )]
+position = Vector2( 159.454, -280.034 )
+
+[node name="gooholden" type="KinematicBody2D" parent="."]
+position = Vector2( 1929.92, -282.023 )
+collision_layer = 4
+collision_mask = 12
+script = ExtResource( 8 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="gooholden"]
+visible = false
+polygon = PoolVector2Array( -75, -209, -117, 32, -101, 195, 122, 196, 127, 59, 81, -208 )
+
+[node name="body" type="Node2D" parent="gooholden"]
+modulate = Color( 0.156863, 0.941176, 0.188235, 1 )
+
+[node name="arm_back" type="Sprite" parent="gooholden/body"]
+position = Vector2( 10.2014, -90.4489 )
+rotation = -1.09811
+texture = ExtResource( 13 )
+offset = Vector2( -24.7934, 73.612 )
+
+[node name="flashlight" type="Node2D" parent="gooholden/body/arm_back"]
+position = Vector2( -6.96094, 174.48 )
+rotation = 1.53444
+scale = Vector2( 0.75, 0.75 )
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_group_": true
+}
+player = NodePath("../../../../ghost")
+
+[node name="Area2D" type="Area2D" parent="gooholden/body/arm_back/flashlight"]
+collision_layer = 16
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="gooholden/body/arm_back/flashlight/Area2D"]
+visible = false
+polygon = PoolVector2Array( 8.33072, -40.1222, 311.974, -448.547, 507.283, -226.861, 40.0617, -9.52451 )
+
+[node name="Polygon2D" type="Polygon2D" parent="gooholden/body/arm_back/flashlight/Area2D"]
+visible = false
+color = Color( 1, 1, 1, 0.733333 )
+polygon = PoolVector2Array( 13.0876, -39.6211, 226.346, -310.922, 341.779, -179.185, 40.4785, -9.62149 )
+
+[node name="Light2D" type="Light2D" parent="gooholden/body/arm_back/flashlight"]
+rotation = -0.676894
+texture = ExtResource( 18 )
+energy = 2.0
+shadow_enabled = true
+
+[node name="Sprite" type="Sprite" parent="gooholden/body/arm_back/flashlight"]
+light_mask = 0
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 17 )
+
+[node name="rays" type="Node2D" parent="gooholden/body/arm_back/flashlight"]
+
+[node name="ray1" type="RayCast2D" parent="gooholden/body/arm_back/flashlight/rays" groups=[
+"rays",
+]]
+enabled = true
+cast_to = Vector2( 500, -220 )
+collision_mask = 41
+
+[node name="ray2" type="RayCast2D" parent="gooholden/body/arm_back/flashlight/rays" groups=[
+"rays",
+]]
+position = Vector2( 8.32446, -37.1627 )
+enabled = true
+cast_to = Vector2( 300, -400 )
+collision_mask = 41
+
+[node name="ray3" type="RayCast2D" parent="gooholden/body/arm_back/flashlight/rays" groups=[
+"rays",
+]]
+position = Vector2( 16.788, -12.2176 )
+enabled = true
+cast_to = Vector2( 400, -350 )
+collision_mask = 41
+
+[node name="legs" type="AnimatedSprite" parent="gooholden/body"]
+position = Vector2( -5.6123, 84.4653 )
+frames = SubResource( 12 )
+animation = "turnaround"
+
+[node name="torso" type="AnimatedSprite" parent="gooholden/body"]
+position = Vector2( 1.42078, -51.4378 )
+frames = SubResource( 16 )
+animation = "turnaround"
+
+[node name="head" type="AnimatedSprite" parent="gooholden/body"]
+position = Vector2( -10.2897, -187.461 )
+frames = SubResource( 18 )
+animation = "turnaround"
+
+[node name="arm_front" type="Sprite" parent="gooholden/body"]
+position = Vector2( -24.7679, -85.6617 )
+rotation = 0.138978
+texture = ExtResource( 13 )
+offset = Vector2( -24.7934, 73.612 )
+
+[node name="Label" type="Label" parent="gooholden"]
+visible = false
+margin_left = 0.87558
+margin_top = -253.079
+margin_right = 40.8756
+margin_bottom = -214.079
+custom_fonts/font = SubResource( 19 )
+text = "!!!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
